@@ -1,10 +1,11 @@
 let chart = null;
 
 $(document).ready(function () {
-    const rawUrl = 'https://raw.githubusercontent.com/ajdaca/senzorskiSistemi/master/senzori1.csv';
+    // Direktan GitHub Pages URL do CSV fajla
+    const csvUrl = 'https://ajdaca.github.io/senzorskiSistemi/senzori1.csv';
     
-    // Automatsko učitavanje CSV sa GitHub-a
-    $.get(rawUrl, function(data) {
+    // Automatsko učitavanje CSV sa GitHub Pages
+    $.get(csvUrl, function(data) {
         dataToArrays(data);
     }, 'text');
 
@@ -14,6 +15,7 @@ $(document).ready(function () {
         csvInput.addEventListener('change', upload, false);
     }
 });
+
 
 function dataToArrays(data) {
     const parsedData = Papa.parse(data, { header: false });
