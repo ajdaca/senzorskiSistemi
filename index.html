@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -12,6 +11,38 @@
 
     <title>IT u senzorskim sistemima</title>
     <style>
+        /* Header sa logom */
+        .header {
+            position: relative;
+            text-align: center;
+            padding: 20px 0;
+            background: #f8f9fa;
+        }
+
+        #logo {
+            height: 180px;
+            width: 180px;
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        /* Pozadinska slika ispod headera */
+        .header-bg {
+            background-image: url('datalogger.png'); /* zameni sa 'images/datalogger.png' ako je u folderu images */
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            margin-bottom: 20px;
+            border-radius: 15px;
+        }
+
         /* Suženje grafa i tabele */
         #chartContainer {
             max-width: 900px;
@@ -28,22 +59,6 @@
             margin: 20px auto;
         }
 
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-            margin-bottom: 30px;
-        }
-
-        #logo {
-            height: 200px;
-            width: 200px;
-        }
-
-        .header-row {
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
         #videoContainer {
             max-width: 900px;
             margin: 30px auto;
@@ -54,17 +69,14 @@
 <body>
     <div class="container-fluid">
 
-        <!-- Logo i naslov -->
-        <div class="row header-row">
-            <div class="col-md-2 text-center">
-                <!-- Ovde ide logo fakulteta -->
-                <img src="logo.svg" alt="FTN Čačak Logo" id="logo">
-
-            </div>
-            <div class="col-md-10">
-                <h1>IT u senzorskim sistemima</h1>
-            </div>
+        <!-- Header sa logom i naslovom -->
+        <div class="header">
+            <img src="logo.svg" alt="FTN Čačak Logo" id="logo">
+            <h1>IT u senzorskim sistemima</h1>
         </div>
+
+        <!-- Pozadinska slika -->
+        <div class="header-bg"></div>
 
         <!-- Polja za ime i broj indeksa -->
         <div class="input-row row">
