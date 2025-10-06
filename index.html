@@ -33,38 +33,60 @@
             margin-top: 20px;
             margin-bottom: 30px;
         }
+
+        #logo {
+            max-height: 80px;
+        }
+
+        .header-row {
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #videoContainer {
+            max-width: 900px;
+            margin: 30px auto;
+        }
     </style>
 </head>
 
 <body>
     <div class="container-fluid">
 
-        <!-- Naslov -->
-        <h1>IT u senzorskim sistemima</h1>
-
-        <!-- Polja za ime i broj indeksa -->
-        <div class="input-row row">
-            <div >
-                Dusan Ajdacic
+        <!-- Logo i naslov -->
+        <div class="row header-row">
+            <div class="col-md-2 text-center">
+                <!-- Ovde ide logo fakulteta -->
+                <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/University_of_Belgrade_Logo.png" alt="Fakultet Logo" id="logo">
             </div>
-            <div >
-                104/2020
+            <div class="col-md-10">
+                <h1>IT u senzorskim sistemima</h1>
             </div>
         </div>
 
-        <!-- Upload fajla -->
-        <!-- <div class="input-row">
-            <form>
-                <div class="form-group">
-                    <label for="csvFile">Upload CSV fajla</label>
-                    <input type="file" class="form-control-file" id="csvFile" accept=".csv">
-                </div>
-            </form>
-        </div> -->
+        <!-- Polja za ime i broj indeksa -->
+        <div class="input-row row">
+            <div class="col-md-6 mb-2">
+                <strong>Ime:</strong> Dusan Ajdacic
+            </div>
+            <div class="col-md-6 mb-2">
+                <strong>Broj indeksa:</strong> 104/2020
+            </div>
+        </div>
 
         <!-- Grafikon -->
         <div id="chartContainer">
             <canvas id="myChart" style="width:100%; height: 400px;"></canvas>
+        </div>
+
+        <!-- Video sa YouTube -->
+        <div id="videoContainer" class="text-center">
+            <h4>Video o senzorima</h4>
+            <div class="embed-responsive embed-responsive-16by9">
+                <iframe class="embed-responsive-item"
+                    src="https://www.youtube.com/embed/f4dI3Z7fVZk" 
+                    allowfullscreen></iframe>
+            </div>
         </div>
 
         <!-- Tabela sa podacima -->
