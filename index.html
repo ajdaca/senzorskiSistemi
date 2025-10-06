@@ -11,6 +11,10 @@
 
     <title>IT u senzorskim sistemima</title>
     <style>
+        body {
+            background-color: #B3ABAB;
+        }
+
         /* Header sa logom */
         .header {
             position: relative;
@@ -26,11 +30,6 @@
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            margin-top: 130px;
-        }
-
-        body{
-            background-color: #B3ABAB;
         }
 
         .header h1 {
@@ -44,27 +43,33 @@
             margin: 20px auto;
         }
 
-        /* Grafikon sa pozadinskom slikom */
-        #chartContainer {
-            max-width: 900px;
-            margin: 0 auto;
+        /* Grafikon preko pozadinske slike */
+        .chart-bg {
+            width: 100%;
             background-image: url('datalogger.png'); /* ili 'images/datalogger.png' */
             background-size: cover;
             background-position: center;
-            border-radius: 15px;
-            padding: 20px;
+            padding: 40px 0;
         }
 
-        /* Tabela */
-        #parsedData {
+        #chartContainer {
             max-width: 900px;
-            margin: 20px auto;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            padding: 20px;
         }
 
         /* Video */
         #videoContainer {
             max-width: 900px;
             margin: 30px auto;
+        }
+
+        /* Tabela */
+        #parsedData {
+            max-width: 900px;
+            margin: 20px auto;
         }
     </style>
 </head>
@@ -88,19 +93,22 @@
             </div>
         </div>
 
-        <!-- Grafikon sa pozadinskom slikom -->
-        <div id="chartContainer">
-            <canvas id="myChart" style="width:100%; height: 400px; background-color: white;"></canvas>
+        <!-- Grafikon sa pozadinskom slikom preko cele širine -->
+        <div class="chart-bg">
+            <div id="chartContainer">
+                <canvas id="myChart" style="width:100%; height: 400px;"></canvas>
+            </div>
         </div>
 
         <!-- Video sa YouTube -->
         <div id="videoContainer" class="text-center">
             <h4>Data Harvest (EasySense)</h4>
             <div class="embed-responsive embed-responsive-16by9">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/7NamTKj4mUQ?si=i-ULIaLjFSGkLisA" 
-                title="YouTube video player" frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="embed-responsive-item"
+                    src="https://www.youtube.com/embed/7NamTKj4mUQ" 
+                    title="YouTube video player" frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen></iframe>
             </div>
         </div>
 
