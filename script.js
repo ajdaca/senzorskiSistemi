@@ -1,25 +1,18 @@
 let chart = null;
 
 $(document).ready(function () {
-    // Automatski učitavanje CSV sa GitHub-a
-    const rawUrl = 'https://raw.githubusercontent.com/ajdaca/senzorskiSistemi/main/senzori1.csv';
-$.get(rawUrl, function(data) {
-    dataToArrays(data);
-}, 'text');
+    const rawUrl = 'https://raw.githubusercontent.com/ajdaca/senzorskiSistemi/master/senzori1.csv';
+    
+    // Automatsko učitavanje CSV sa GitHub-a
+    $.get(rawUrl, function(data) {
+        dataToArrays(data);
+    }, 'text');
 
-
-    // Upload lokalnog CSV fajla
-    $('#csvFile').on('change', function(evt) {
-        if (chart) chart.destroy();
-        const file = evt.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.readAsText(file);
-        reader.onload = function(e) {
-            dataToArrays(e.target.result);
-        };
-    });
+    // Event listener za upload lokalnog CSV
+    const csvInput = document.getElementById('csvFile');
+    if (csvInput) {
+        csvInput.addEventListener('change', upload, false);
+    }
 });
 
 function dataToArrays(data) {
@@ -32,21 +25,20 @@ function createChart(parsedData) {
     const dataMatrix = [];
     const headingArray = [];
 
+    // Heading i units
     for (let i = 0; i < dataArray[0].length; i++) {
         dataMatrix[i] = [];
-        headingArray.push({
-            title: dataArray[0][i],
-            unit: dataArray[1][i] || '',
-        });
+        headingArray.push({ title: dataArray[0][i], unit: dataArray[1][i] || '' });
     }
 
+    // Popunjavanje dataMatrix
     for (let i = 0; i < dataArray.length; i++) {
         for (let j = 0; j < dataArray[i].length; j++) {
-            dataArray[i][j] = dataArray[i][j] || null;
-            dataMatrix[j][i] = dataArray[i][j];
+            dataMatrix[j][i] = dataArray[i][j] || null;
         }
     }
 
+    // Uklanjanje kolone "Comment"
     const commentIndex = headingArray.findIndex(el => el.title === 'Comment');
     if (commentIndex !== -1) {
         dataMatrix.splice(commentIndex, 1);
@@ -58,22 +50,21 @@ function createChart(parsedData) {
     parsedData.data.forEach(row => {
         if (row.some(el => el !== null)) {
             html += '<tr>';
-            row.forEach(cell => {
-                html += `<td>${cell !== null ? cell : ''}</td>`;
-            });
+            row.forEach(cell => html += `<td>${cell !== null ? cell : ''}</td>`);
             html += '</tr>';
         }
     });
     html += '</tbody></table>';
     $('#parsedData').html(html);
 
-    // Chart.js
-    const labels = dataMatrix[0].slice(3);
+    // Labels i datasets
+    const labels = dataMatrix[0].slice(3); // uklanjamo prva 3 reda
     const datasets = [];
 
     for (let i = 1; i < dataMatrix.length; i++) {
         const label = dataMatrix[i][0];
         const datasetData = dataMatrix[i].slice(3);
+
         datasets.push({
             label,
             data: datasetData,
@@ -83,7 +74,9 @@ function createChart(parsedData) {
         });
     }
 
+    // Chart.js
     const ctx = document.getElementById('myChart').getContext('2d');
+    if (chart) chart.destroy(); // uništava prethodni chart
     chart = new Chart(ctx, {
         type: 'line',
         data: { labels, datasets },
@@ -104,4 +97,18 @@ function createChart(parsedData) {
 function getColor() {
     const colors = ['FF0000','FF4500','C71585','FF8C00','FF00FF','1E90FF','0000FF','D2691E','CD5C5C','6A5ACD','32CD32','008080'];
     return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function upload(evt) {
+    const file = evt.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = function(e) {
+        dataToArrays(e.target.result);
+    };
+    reader.onerror = function() {
+        console.log('Unable to read ' + file.name);
+    };
 }
