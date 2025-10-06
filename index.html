@@ -11,34 +11,71 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
     <title>IT u senzorskim sistemima</title>
+    <style>
+        /* Suženje grafa i tabele */
+        #chartContainer {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        #parsedData {
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        .input-row {
+            max-width: 900px;
+            margin: 20px auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+    </style>
 </head>
 
 <body>
-
     <div class="container-fluid">
-        <div>
+
+        <!-- Naslov -->
+        <h1>IT u senzorskim sistemima</h1>
+
+        <!-- Polja za ime i broj indeksa -->
+        <div class="input-row row">
+            <div class="col-md-6 mb-2">
+                <input type="text" class="form-control" id="studentName" placeholder="Unesite ime">
+            </div>
+            <div class="col-md-6 mb-2">
+                <input type="text" class="form-control" id="studentIndex" placeholder="Unesite broj indeksa">
+            </div>
+        </div>
+
+        <!-- Upload fajla -->
+        <div class="input-row">
             <form>
-                <div class="form-group mt-2">
-                    <label for="csvFile">Upload Your file</label>
+                <div class="form-group">
+                    <label for="csvFile">Upload CSV fajla</label>
                     <input type="file" class="form-control-file" id="csvFile" accept=".csv">
                 </div>
             </form>
         </div>
 
-        <div class="row">
-            <div class="col-sm-12"><canvas id="myChart" style="width:100%; height: 800px;"></canvas></div>
+        <!-- Grafikon -->
+        <div id="chartContainer">
+            <canvas id="myChart" style="width:100%; height: 400px;"></canvas>
         </div>
 
-        <div class="row mt-4">
-            <div class="col col-sm-12">
-                <div class="pl-5">
-                    <h4>Current data</h4>
-                    <div id="parsedData"></div>
-                </div>
-            </div>
+        <!-- Tabela sa podacima -->
+        <div id="parsedData" class="border p-3 rounded bg-light">
+            <h4>Current Data</h4>
+            <div id="dataTable"></div>
         </div>
+
     </div>
 
+    <!-- JS biblioteke -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.0/papaparse.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
