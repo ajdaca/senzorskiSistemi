@@ -1,182 +1,107 @@
-let chart = document.getElementById('myChart');
+let chart = null;
 
 $(document).ready(function () {
-    if ($('#myChart').html() === "") {
-        $.get('https://lazarstarco.github.io/main.csv', function (data) { dataToArrays(data) }, 'text');
-    }
+    // Automatski učitavanje CSV sa GitHub-a
+    const rawUrl = 'https://raw.githubusercontent.com/ajdaca/senzorskiSistemi/main/senzori1.csv';
+$.get(rawUrl, function(data) {
+    dataToArrays(data);
+}, 'text');
 
-    document.getElementById('csvFile').addEventListener('change', upload, false);
 
+    // Upload lokalnog CSV fajla
+    $('#csvFile').on('change', function(evt) {
+        if (chart) chart.destroy();
+        const file = evt.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function(e) {
+            dataToArrays(e.target.result);
+        };
+    });
 });
 
 function dataToArrays(data) {
-    let rawData = Papa.parse(data);
-   
-    createChart(rawData);
+    const parsedData = Papa.parse(data, { header: false });
+    createChart(parsedData);
 }
 
 function createChart(parsedData) {
-    let dataArray = parsedData.data;
-    let dataMatrix = [];
-
-    let headingArray = [];
+    const dataArray = parsedData.data;
+    const dataMatrix = [];
+    const headingArray = [];
 
     for (let i = 0; i < dataArray[0].length; i++) {
         dataMatrix[i] = [];
-
         headingArray.push({
             title: dataArray[0][i],
-            unit: dataArray[1][i],
-        })
+            unit: dataArray[1][i] || '',
+        });
     }
 
     for (let i = 0; i < dataArray.length; i++) {
         for (let j = 0; j < dataArray[i].length; j++) {
-            if (!dataArray[i][j]) {
-                dataArray[i][j] = null;
-            }
+            dataArray[i][j] = dataArray[i][j] || null;
             dataMatrix[j][i] = dataArray[i][j];
         }
     }
 
-    let commentIndex = headingArray.findIndex(element => {
-        if (element.title === 'Comment') {
-            return true;
-        }
-    });
+    const commentIndex = headingArray.findIndex(el => el.title === 'Comment');
     if (commentIndex !== -1) {
         dataMatrix.splice(commentIndex, 1);
         headingArray.splice(commentIndex, 1);
     }
 
-    let html = '';
-    html += '<table class="table"><tbody>';
-
-    parsedData.data.forEach(element => {
-        if (element.some(function (el) { return el !== null; })) {
+    // Prikaz tabele
+    let html = '<table class="table"><tbody>';
+    parsedData.data.forEach(row => {
+        if (row.some(el => el !== null)) {
             html += '<tr>';
-            element.forEach(element => {
-                html += '<td>' + (element !== null ? element : '') + '</td>';
+            row.forEach(cell => {
+                html += `<td>${cell !== null ? cell : ''}</td>`;
             });
             html += '</tr>';
         }
     });
-    html += '</tbody></table>'
+    html += '</tbody></table>';
     $('#parsedData').html(html);
 
-    console.log(parsedData);
-    console.log(dataMatrix);
-    console.log(headingArray);
-
-    /* Global chart options */
-
-    Chart.defaults.global.defaultFontFamily = 'Consolas';
-    Chart.defaults.global.defaultFontSize = 18;
-    Chart.defaults.global.defaultFontColor = 'black';
-
-    Chart.defaults.global.elements.line.backgroundColor = 'transparent';
-
-    /* /Global chart options */
-
-    /* Data */
-
-    let labels = dataMatrix[0];
-    labels.splice(0, 3);
-
-    let datasets = [];
+    // Chart.js
+    const labels = dataMatrix[0].slice(3);
+    const datasets = [];
 
     for (let i = 1; i < dataMatrix.length; i++) {
-        let label = dataMatrix[i][0];
-
-        let datasetData = dataMatrix[i];
-        datasetData.splice(0, 3);
-
+        const label = dataMatrix[i][0];
+        const datasetData = dataMatrix[i].slice(3);
         datasets.push({
-            label: label,
+            label,
             data: datasetData,
-
             borderColor: '#' + getColor(),
-            borderWidth: '1',
-
-            pointRadius: 0,
+            borderWidth: 1,
+            pointRadius: 0
         });
     }
 
-    /* /Data */
-
-    let myChart = document.getElementById('myChart').getContext('2d');
-    let type = 'line';
-    let data = {
-        labels,
-        datasets,
-    };
-    let options = {
-        title: {
-            display: true,
-            text: ['Display of measurement results'],
-            fontSize: 23,
-        },
-        legend: {
-            position: 'bottom',
-            labels: {
-                fontColor: 'black',
+    const ctx = document.getElementById('myChart').getContext('2d');
+    chart = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets },
+        options: {
+            title: { display: true, text: ['Display of measurement results'], fontSize: 23 },
+            legend: { position: 'bottom', labels: { fontColor: 'black' } },
+            tooltips: {
+                intersect: false,
+                callbacks: {
+                    title: t => headingArray[0].title + ": " + t[0].label + " " + headingArray[0].unit,
+                    label: t => t.yLabel + " " + headingArray[t.datasetIndex + 1].unit
+                }
             }
-        },
-        tooltips: {
-            intersect: false,
-            callbacks: {
-                title: (toolTipItem) => {
-                    return headingArray[0].title + ": " + toolTipItem[0].label + " " + headingArray[0].unit;
-                },
-                label: (toolTipItem) => {
-                    return toolTipItem.yLabel + " " + headingArray[toolTipItem.datasetIndex + 1].unit;
-
-                },
-            },
-        },
-    };
-
-    chart = new Chart(myChart, { type, data, options });
+        }
+    });
 }
 
 function getColor() {
-    colors = [
-        'FF0000',
-        'FF4500',
-        'C71585',
-        'FF8C00',
-        'FF00FF',
-        '1E90FF',
-        '0000FF',
-        'D2691E',
-        'CD5C5C',
-        '6A5ACD',
-        '32CD32',
-        '008080',
-    ]
-    return colors[Math.floor(Math.random() * colors.length)]
-}
-
-function upload(evt) {
-    if (chart != null) {
-        chart.destroy();
-    }
-
-    let data = null;
-    let file = evt.target.files[0];
-    let reader = new FileReader();
-    try { reader.readAsText(file); } catch (e) { console.log(e) }
-    reader.onload = function (event) {
-        let csvData = event.target.result;
-        data = csvData;
-        if (data && data.length > 0) {
-            console.log('Imported -' + data.length + '- rows successfully!');
-            dataToArrays(data);
-        } else {
-            console.log('No data to import!');
-        }
-    };
-    reader.onerror = function () {
-        console.log('Unable to read ' + file.fileName);
-    };
+    const colors = ['FF0000','FF4500','C71585','FF8C00','FF00FF','1E90FF','0000FF','D2691E','CD5C5C','6A5ACD','32CD32','008080'];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
