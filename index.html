@@ -44,6 +44,28 @@
         .input-row {
             max-width: 900px;
             margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .info-box {
+            background-color: #F5F5F5;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px 25px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .info-box:hover {
+            background-color: #333;
+            color: #fff;
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         /* Grafikon preko pozadinske slike */
@@ -86,12 +108,12 @@
             <h1>IT u senzorskim sistemima</h1>
         </div>
 
-        <!-- Polja za ime i broj indeksa -->
+        <!-- Polja za ime i broj indeksa sa lepim hover efektom -->
         <div class="input-row row">
-            <div class="col-md-6 mb-2">
+            <div class="info-box">
                 <strong>Ime:</strong> Dusan Ajdacic
             </div>
-            <div class="col-md-6 mb-2">
+            <div class="info-box">
                 <strong>Broj indeksa:</strong> 104/2020
             </div>
         </div>
@@ -108,9 +130,9 @@
             <h4>Data Harvest (EasySense)</h4>
             <div class="embed-responsive embed-responsive-16by9">
                 <iframe class="embed-responsive-item"
-                    src="https://www.youtube.com/embed/7NamTKj4mUQ" 
-                    title="YouTube video player" frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    src="https://www.youtube.com/embed/7NamTKj4mUQ"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen></iframe>
             </div>
         </div>
