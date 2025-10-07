@@ -71,17 +71,21 @@ function createChart(parsedData) {
     const labels = dataMatrix[0].slice(3); // ukloni prva 3 reda
     const datasets = [];
 
+    // Fiksne boje (redom)
+    const colors = ['#FF0000','#FF4500','#C71585','#FF8C00','#FF00FF','#1E90FF','#0000FF','#D2691E','#CD5C5C','#6A5ACD','#32CD32','#008080'];
+
     for (let i = 1; i < dataMatrix.length; i++) {
         const label = dataMatrix[i][0];
         const datasetData = dataMatrix[i].slice(3);
+        const color = colors[(i-1) % colors.length]; // u slučaju više serija nego boja, vrti po redu
 
         datasets.push({
             label: label,
             data: datasetData,
-            borderColor: '#' + getColor(),
+            borderColor: color,
             borderWidth: 2,
             pointRadius: 0,
-            fill: false,                // nema osenčenu površinu
+            fill: false,
             backgroundColor: 'transparent'
         });
     }
@@ -113,9 +117,4 @@ function createChart(parsedData) {
             maintainAspectRatio: false
         }
     });
-}
-
-function getColor() {
-    const colors = ['FF0000','FF4500','C71585','FF8C00','FF00FF','1E90FF','0000FF','D2691E','CD5C5C','6A5ACD','32CD32','008080'];
-    return colors[Math.floor(Math.random() * colors.length)];
 }
