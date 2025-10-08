@@ -72,7 +72,7 @@ function createChart(parsedData) {
     const datasets = [];
 
     // Fiksne boje (redom)
-    const colors = ['#FF0000','#FF4500','#C71585','#FF8C00','#FF00FF','#1E90FF','#0000FF','#D2691E','#CD5C5C','#6A5ACD','#32CD32','#008080'];
+    const colors = ['#FF0000','#00ff62ff','#C71585','#fffb00ff','#FF00FF','#1E90FF','#0000FF','#D2691E','#CD5C5C','#6A5ACD','#32CD32','#008080'];
 
     for (let i = 1; i < dataMatrix.length; i++) {
         const label = dataMatrix[i][0];
